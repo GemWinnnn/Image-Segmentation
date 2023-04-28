@@ -1,0 +1,12 @@
+
+streamlit
+numpy
+scipy
+opencv-python-headless
+matplotlib
+tensorflow
+streamlit_webrtc
+cv2
+keras
+glob
+os
