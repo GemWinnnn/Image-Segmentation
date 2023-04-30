@@ -3,7 +3,8 @@ import numpy as np
 import cv2
 import os
 from glob import glob
-from keras import preprocessing
+from tensorflow.keras import preprocessing
+
 
 class_names = ['CUP', 'SPOON', 'FORK', 'MOUSE']
 camera_height = 500
@@ -95,19 +96,31 @@ for i, folder_name in enumerate(glob('img_*')):
         image_list.append(x)
     # Store the list of image arrays for this
     image_arrays[i] = image_list
-
 # Display the first 5 images for each type of frame
-plt.figure(figsize=(12, 8))
+def display_images(image_arrays, class_names):
+    max_images_per_class = 5
 
-for i, image_list in enumerate(image_arrays):
-    for j, x in enumerate(image_list[:5]):
-        plt.subplot(1, 5, j + 1)
-        image = preprocessing.image.array_to_img(x)
-        plt.imshow(image)
-        plt.axis('off')
-        plt.title(f'{class_names[i]} image')
+    for class_index, image_list in enumerate(image_arrays):
+        plt.figure(figsize=(12, 8))
+        
+        num_images = min(max_images_per_class, len(image_list))
 
-    plt.show()
+        for i in range(num_images):
+            plt.subplot(1, max_images_per_class, i + 1)
+            image = preprocessing.image.array_to_img(image_list[i])
+            plt.imshow(image)
+            plt.axis('off')
+            
+            # Label each image with its corresponding class
+            plt.title(f'{class_names[class_index]} image', fontsize=10)
+
+        plt.show()
+
+display_images(image_arrays, class_names)
+
+
+
+
 
 
 
