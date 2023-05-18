@@ -12,6 +12,10 @@ from keras.optimizers import Adam
 from PIL import Image
 import seaborn as sns 
 from sklearn.metrics import confusion_matrix
+from keras.utils import to_categorical
+from keras.applications import inception_v3
+import time 
+
 
 class_names = ['HEADPHONE','USBDRIVE','MOUSE','POWERBANK']
 
@@ -208,7 +212,6 @@ for image_path in glob('img_4/*.*'):
     # labels.append(class_index)
 
 
-
 print('Shape of images_type_1:', images_type_1[0].shape)
 print('Shape of images_type_2:', images_type_2[0].shape)
 print('Shape of images_type_3:', images_type_3[0].shape)
@@ -257,7 +260,6 @@ for i, x in enumerate(images_type_4[:5]):
     plt.axis('off')
     plt.title('{} image'.format(class_names[3]))
 plt.show()
-plt.figure(figsize=(12,8))
 
 
 # Prepare Image to Tensor
@@ -275,9 +277,6 @@ print (X_type_3.shape)
 print (X_type_4.shape)
 
 
-
-print(X_type_2)
-
  
 X = np.concatenate((X_type_1, X_type_2), axis=0)
 
@@ -290,9 +289,6 @@ if len (X_type_4):
 #Scaling the data to 1-0
 
 X = X/225.0
-
-print (X.shape)
-#(71,96,96,3)
 
 
 y_type_1 = [0 for item in enumerate (X_type_1)]
@@ -311,7 +307,7 @@ if len (y_type_4):
 y = to_categorical(y,num_classes=len(class_names))
 
 print(y.shape)
-#(72, 4)
+(72, 4)
 
 #default Parameters
 
@@ -370,6 +366,7 @@ def build_model (conv_1_drop = conv_1_drop, conv_2_drop = conv_2_drop,
     
     return model
 
+# model parameter
 model = build_model()
 
 model.summary()
@@ -422,24 +419,73 @@ imgs = [headphone, mouse, usbdrive, powerbank]
 #def predict_(img_path):
 classes = None
 predicted_classes = []
+true_labels = []
 
-for i in range(len( imgs)):
-    type_ = tf.keras.utils.load_img(imgs[i], target_size=(width, height))
-    plt.imshow(type_) # type: ignore
+for i in range(len(imgs)):
+    img = Image.open(imgs[i]).convert('RGB')
+    img = img.resize((width, height))
+    plt.imshow(img)
     plt.show()
-
-    type_x = np.expand_dims(type_, axis=0) # type: ignore
+    
+    type_x = np.expand_dims(img, axis=0)
     prediction = model.predict(type_x)
     index = np.argmax(prediction)
-    
     print(class_names[index])
     classes = class_names[index]
     predicted_classes.append(class_names[index])
+    
+    true_labels.append(class_names[i % len(class_names)])
 
-cm = confusion_matrix(class_names, predicted_classes)
-f = sns.heatmap(cm, xticklabels=" ".join(class_names), yticklabels=" ".join(predicted_classes), annot=True)
+cm = confusion_matrix(true_labels, predicted_classes)
+f = sns.heatmap(cm, xticklabels=class_names, yticklabels=class_names, annot=True)
 
+type_1 = Image.open('img_1/10.png').convert('RGB')
+type_1 = type_1.resize((width, height))
 
+plt.imshow(type_1)
+plt.show()
+
+type_1_x = np.expand_dims(type_1, axis=0)
+predictions = model.predict(type_1_x)
+index = np.argmax(predictions)
+
+print(class_names[index])
+
+type_2 = Image.open('img_2/16.png').convert('RGB')
+type_2 = type_2.resize((width, height))
+
+plt.imshow(type_2)
+plt.show()
+
+type_2_x = np.expand_dims(type_2, axis=0)
+predictions = model.predict(type_2_x)
+index = np.argmax(predictions)
+
+print(class_names[index])
+
+type_3 = Image.open('img_3/09.png').convert('RGB')
+type_3 = type_3.resize((width, height))
+
+plt.imshow(type_3)
+plt.show()
+
+type_3_x = np.expand_dims(type_3, axis=0)
+predictions = model.predict(type_3_x)
+index = np.argmax(predictions)
+
+print(class_names[index])
+
+type_4 = Image.open('img_4/10.png').convert('RGB')
+type_4 = type_4.resize((width, height))
+
+plt.imshow(type_4)
+plt.show()
+
+type_4_x = np.expand_dims(type_4, axis=0)
+predictions = model.predict(type_4_x)
+index = np.argmax(predictions)
+
+print(class_names[index])
 
 
 #Live Predictions using camera
@@ -447,56 +493,53 @@ f = sns.heatmap(cm, xticklabels=" ".join(class_names), yticklabels=" ".join(pred
 CAMERA = cv2.VideoCapture(0)
 camera_height = 500
 
-while(True):
-  
-    res, frame = CAMERA.read()
+while True:
+    _, frame = CAMERA.read()
 
-    frame = cv2.flip (frame, 1)
+    # Flip
+    frame = cv2.flip(frame, 1)
 
-    #Resacle the images output
-    aspect = frame.shape[1]/float(frame.shape[0])
-    res = int(aspect* camera_height)
+    # Rescale the image output
+    aspect = frame.shape[1] / float(frame.shape[0])
+    res = int(aspect * camera_height)  # Landscape orientation - wide image
     frame = cv2.resize(frame, (res, camera_height))
 
-    x1 = int(frame.shape[1] * 0.25)
-    y1 = int(frame.shape[0] * 0.25)
-    
-    x2 = int(frame.shape[1] * 0.75)
-    y2 = int(frame.shape[0] * 0.75)
+    # Get ROI
+    roi = frame[50:425, 150:650]
 
-    roi = frame[y1+2:y2-2, x1+2:x2-2]
-    #roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
+    # Parse BRG to RGB
+    roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
+
+    # Adjust alignment
     roi = cv2.resize(roi, (width, height))
-    roi_x = np.expand_dims(roi, axis=0)
+    roi = np.expand_dims(roi, axis=0)
 
-    predictions = model.predict(roi_x)
+    predictions = model.predict(roi)
     type_1_x, type_2_x, type_3_x, type_4_x = predictions[0]
 
-    #The green rectangle
-    cv2.rectangle(frame, (x1, y1), (x2, y2), (240, 100, 0), 2)
+    # Green rectangle
+    cv2.rectangle(frame, (150, 50), (650, 425), (0, 255, 0), 2)
 
-    #Predictions / Labels
-    type_1_txt = '{} - {}%'.format(class_names[0], int(type_1_x*100))
-    cv2.putText(frame, type_1_txt, (70, 210), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(240,240,240), 2)
+    # Predictions/Labels
+    type_1_text = '{} - {}%'.format(class_names[0], int(type_1_x * 100))
+    cv2.putText(frame, type_1_text, (70, 210), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
 
-    type_2_txt = '{} - {}%'.format(class_names[1], int(type_2_x*100))
-    cv2.putText(frame, type_2_txt, (70, 235), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(240,240,240), 2)
+    type_2_text = '{} - {}%'.format(class_names[1], int(type_2_x * 100))
+    cv2.putText(frame, type_2_text, (70, 235), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
 
-    type_3_txt = '{} - {}%'.format(class_names[2], int(type_3_x*100))
-    cv2.putText(frame, type_3_txt, (70, 255), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(240,240,240), 2)
+    type_3_text = '{} - {}%'.format(class_names[2], int(type_3_x * 100))
+    cv2.putText(frame, type_3_text, (70, 255), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
 
-    type_4_txt = '{} - {}%'.format(class_names[3], int(type_4_x*100))
-    cv2.putText(frame, type_4_txt, (70, 275), cv2.FONT_HERSHEY_SIMPLEX, 0.6,(240,240,240), 2)
+    type_4_text = '{} - {}%'.format(class_names[3], int(type_4_x * 100))
+    cv2.putText(frame, type_4_text, (70, 275), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
 
-    cv2.imshow("Real time object detection", frame)
+    cv2.imshow('Real-time object detection', frame)
+
+    # Controls q = quit
     key = cv2.waitKey(1)
-    if key & 0xff == ord('q'):
+    if key & 0xFF == ord('q'):
         break
 
-    #preview
-    plt.imshow(frame)
-    plt.show()
-
-    #Camera
+# Release the camera
 CAMERA.release()
 cv2.destroyAllWindows()
