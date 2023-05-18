@@ -17,7 +17,7 @@ from keras.applications import inception_v3
 import time 
 
 
-class_names = ['HEADPHONE','USBDRIVE','MOUSE','POWERBANK']
+class_names = ['HEADPHONE','HARDDRIVE','MOUSE','POWERBANK']
 
 # Initialize the camera
 CAMERA = cv2.VideoCapture(0)
@@ -324,7 +324,7 @@ dense_2_n =512
 dense_2_drop = 0.2
 
 lr = 0.001
-epochs = 15
+epochs = 5
 batch_size =10
 color_channels =  3
 
@@ -411,10 +411,10 @@ def plt_show(img):
 
 headphone = 'img_1/0.png'
 mouse = 'img_2/0.png'
-usbdrive = 'img_3/0.png'
+harddrive = 'img_3/0.png'
 powerbank = 'img_4/0.png'
 
-imgs = [headphone, mouse, usbdrive, powerbank]
+imgs = [headphone, mouse, harddrive, powerbank]
 
 #def predict_(img_path):
 classes = None
