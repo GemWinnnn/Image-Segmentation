@@ -505,7 +505,7 @@ while True:
     frame = cv2.resize(frame, (res, camera_height))
 
     # Get ROI
-    roi = frame[50:425, 150:650]
+    roi = frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x]
 
     # Parse BRG to RGB
     roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
@@ -518,7 +518,8 @@ while True:
     type_1_x, type_2_x, type_3_x, type_4_x = predictions[0]
 
     # Green rectangle
-    cv2.rectangle(frame, (150, 50), (650, 425), (0, 255, 0), 2)
+    cv2.rectangle(frame, (top_left_x, top_left_y), (bottom_right_x, bottom_right_y), (0, 255, 0), 2)
+
 
     # Predictions/Labels
     type_1_text = '{} - {}%'.format(class_names[0], int(type_1_x * 100))
