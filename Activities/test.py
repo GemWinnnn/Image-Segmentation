@@ -276,8 +276,6 @@ print (X_type_2.shape)
 print (X_type_3.shape)
 print (X_type_4.shape)
 
-
- 
 X = np.concatenate((X_type_1, X_type_2), axis=0)
 
 if len (X_type_3):
