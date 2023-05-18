@@ -463,7 +463,7 @@ index = np.argmax(predictions)
 
 print(class_names[index])
 
-type_3 = Image.open('img_3/09.png').convert('RGB')
+type_3 = Image.open('img_3/10.png').convert('RGB')
 type_3 = type_3.resize((width, height))
 
 plt.imshow(type_3)
