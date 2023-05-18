@@ -17,7 +17,7 @@ from keras.applications import inception_v3
 import time 
 
 
-class_names = ['HEADPHONE','HARDDRIVE','MOUSE','POWERBANK']
+class_names = ['HEADPHONE','HARDDRIVE','MOUSE','GLASSES']
 
 # Initialize the camera
 CAMERA = cv2.VideoCapture(1)
@@ -412,9 +412,9 @@ def plt_show(img):
 headphone = 'img_1/10.png'
 mouse = 'img_2/10.png'
 harddrive = 'img_3/10.png'
-powerbank = 'img_4/10.png'
+glasses = 'img_4/10.png'
 
-imgs = [headphone, mouse, harddrive, powerbank]
+imgs = [headphone, mouse, harddrive, glasses]
 
 #def predict_(img_path):
 classes = None
