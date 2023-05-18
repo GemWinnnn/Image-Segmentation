@@ -20,7 +20,7 @@ import time
 class_names = ['HEADPHONE','HARDDRIVE','MOUSE','POWERBANK']
 
 # Initialize the camera
-CAMERA = cv2.VideoCapture(0)
+CAMERA = cv2.VideoCapture(1)
 
 camera_height = 500
 save_width = 350
@@ -490,7 +490,7 @@ print(class_names[index])
 
 #Live Predictions using camera
 
-CAMERA = cv2.VideoCapture(0)
+CAMERA = cv2.VideoCapture(1)
 camera_height = 500
 
 while True:
