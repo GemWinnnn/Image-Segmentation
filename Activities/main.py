@@ -409,10 +409,10 @@ def plt_show(img):
     plt.imshow(img)
     plt.show()
 
-headphone = 'img_1/0.png'
-mouse = 'img_2/0.png'
-harddrive = 'img_3/0.png'
-powerbank = 'img_4/0.png'
+headphone = 'img_1/10.png'
+mouse = 'img_2/10.png'
+harddrive = 'img_3/10.png'
+powerbank = 'img_4/10.png'
 
 imgs = [headphone, mouse, harddrive, powerbank]
 
