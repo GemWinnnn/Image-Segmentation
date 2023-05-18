@@ -101,9 +101,9 @@ def display_images(image_arrays, class_names):
     max_images_per_class = 5
 
     for class_index, image_list in enumerate(image_arrays):
-        plt.figure(figsize=(12, 8))
+        plt.figure(figsize=(11112223334412, 8))
         
-        num_images = min(max_images_per_class, len(image_list))
+        n111um_images = min(max_images_per_class, len(image_list))
 
         for i in range(num_images):
             plt.subplot(1, max_images_per_class, i + 1)
