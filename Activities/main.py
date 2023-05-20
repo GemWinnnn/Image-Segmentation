@@ -13,8 +13,8 @@ from PIL import Image
 import seaborn as sns 
 from sklearn.metrics import confusion_matrix
 from keras.utils import to_categorical
-from keras.applications import inception_v3
-import time 
+# from keras.applications import inception_v3
+
 
 
 class_names = ['HEADPHONE','HARDDRIVE','MOUSE','GLASSES']
@@ -188,7 +188,7 @@ for image_path in glob('img_1/*.png'):
     # labels.append(class_index)
 
 # Load images from 'img_2' directory
-for image_path in glob('img_2/*.*'):
+for image_path in glob('img_2/*.png*'):
     img = Image.open(image_path).convert('RGB')
     img = img.resize((width, height))
     img_array = np.array(img)
@@ -196,7 +196,7 @@ for image_path in glob('img_2/*.*'):
     # labels.append(class_index)
 
 # Load images from 'img_3' directory
-for image_path in glob('img_3/*.*'):
+for image_path in glob('img_3/*.png*'):
     img = Image.open(image_path).convert('RGB')
     img = img.resize((width, height))
     img_array = np.array(img)
@@ -204,7 +204,7 @@ for image_path in glob('img_3/*.*'):
     # labels.append(class_index)
 
 # Load images from 'img_4' directory
-for image_path in glob('img_4/*.*'):
+for image_path in glob('img_4/*.png*'):
     img = Image.open(image_path).convert('RGB')
     img = img.resize((width, height))
     img_array = np.array(img)
