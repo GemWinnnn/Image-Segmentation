@@ -157,7 +157,7 @@ for i, frame in enumerate(raw_frames_type_3):
     #resize to 224 x 224
     roi = cv2.resize(roi, (save_width, save_height))
     
-    #save
+    #save2
     cv2.imwrite('img_3/{}.png'.format(i), cv2.cvtColor(roi, cv2.COLOR_RGB2BGR))
     
     plt.imshow(roi)
@@ -298,8 +298,6 @@ X = X / 255.0
 
 print (X.shape)
 
-# (72, 96, 96, 3)
-
 
 y_type_1 = [0 for item in enumerate(X_type_1)]
 y_type_2 = [1 for item in enumerate(X_type_2)]
@@ -317,7 +315,7 @@ if len(y_type_4):
 y = to_categorical(y, num_classes=len(class_names))
 
 print(y.shape)
-(72, 4)
+
 
 
 # Situational - values, you may not adjust these
