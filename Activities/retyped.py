@@ -20,7 +20,7 @@ import seaborn as sns
 class_names = ['HEADPHONE','HARDDRIVE','MOUSE','GLASSES']
 
 # Initialize the camera
-CAMERA = cv2.VideoCapture(1)
+CAMERA = cv2.VideoCapture(0)
 
 camera_height = 500
 save_width = 350
@@ -463,8 +463,7 @@ print(class_names[index])
 # Live Predictions using camera
 
 
-CAMERA = cv2.VideoCapture(1)
-camera_height = 500
+CAMERA = cv2.VideoCapture(0)
 
 while(True):
     _, frame = CAMERA.read()
