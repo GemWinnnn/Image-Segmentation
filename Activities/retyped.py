@@ -17,7 +17,7 @@ from keras.applications import inception_v3
 import seaborn as sns 
 import tensorflow as tf
 from keras.preprocessing import image
-from keras.utils import to_categorical, load_img
+from keras.utils import to_categorical
 
 
 class_names = ['HEADPHONE','HARDDRIVE','MOUSE','GLASSES']
@@ -452,6 +452,7 @@ plt.imshow(type_1)
 plt.show()
 
 type_1_x = np.expand_dims(type_1, axis=0)
+
 predictions = model.predict(type_1_x)
 index = np.argmax(predictions)
 
