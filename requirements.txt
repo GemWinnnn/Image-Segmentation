@@ -1,5 +1,4 @@
 
-streamlit
 numpy
 scipy
 opencv-python-headless
@@ -10,3 +9,6 @@ cv2
 keras
 glob
 os
+PIL
+sklearn.metrics
+
