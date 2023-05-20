@@ -207,10 +207,8 @@ for image_path in glob('img_4/*.png*'):
     
     images_type_4.append(x)
     
-plt.figure(figsize=(12, 8))
 
-
-#show in the figure the captured images
+# Generate visualization for images_type_1
 for i, x in enumerate(images_type_1[:5]):
     
     plt.subplot(1, 5, i+1)
@@ -221,7 +219,9 @@ for i, x in enumerate(images_type_1[:5]):
     plt.title('{} image'.format(class_names[0]))
 
 plt.show()
+plt.figure(figsize=(12, 8))
 
+# Generate visualization for images_type_2
 for i, x in enumerate(images_type_2[:5]):
     
     plt.subplot(1, 5, i+1)
@@ -232,7 +232,9 @@ for i, x in enumerate(images_type_2[:5]):
     plt.title('{} image'.format(class_names[1]))
 
 plt.show()
+plt.figure(figsize=(12, 8))
 
+# Generate visualization for images_type_3
 for i, x in enumerate(images_type_3[:5]):
         
     plt.subplot(1, 5, i+1)
@@ -243,7 +245,9 @@ for i, x in enumerate(images_type_3[:5]):
     plt.title('{} image'.format(class_names[2]))
 
 plt.show()
+plt.figure(figsize=(12, 8))
 
+# Generate visualization for images_type_4
 for i, x in enumerate(images_type_4[:5]):
     
     plt.subplot(1, 5, i+1)
@@ -254,6 +258,7 @@ for i, x in enumerate(images_type_4[:5]):
     plt.title('{} image'.format(class_names[3]))
     
 plt.show()
+plt.figure(figsize=(12, 8))
 
 # Prepare Image to Tensor
 
@@ -269,10 +274,6 @@ print (X_type_2.shape)
 print (X_type_3.shape)
 print (X_type_4.shape)
 
-# (13, 96, 96, 3)
-# (23, 96, 96, 3)
-# (14, 96, 96, 3)
-# (22, 96, 96, 3)
 
 print (X_type_2)
 
@@ -309,8 +310,7 @@ if len(y_type_4):
 y = to_categorical(y, num_classes=len(class_names))
 
 print(y.shape)
-
-# (72, 4)
+(72, 4)
 
 
 # Situational - values, you may not adjust these
@@ -426,6 +426,7 @@ imgs = [headphone, mouse, harddrive, glasses]
 
 classes = None
 predicted_classes = []
+true_labels = []
 
 for i in range(len(imgs)):
     type_ = tf.keras.preprocessing.image.load_img(imgs[i], target_size=(width, height))
@@ -439,6 +440,8 @@ for i in range(len(imgs)):
     print(class_names[index])
     classes = class_names[index]
     predicted_classes.append(class_names[index])
+
+    true_labels.append(class_names[i % len(class_names)])
     
 cm = confusion_matrix(class_names, predicted_classes)
 f = sns.heatmap(cm, xticklabels=class_names, yticklabels=predicted_classes, annot=True)
@@ -461,6 +464,28 @@ plt.show()
 
 type_2_x = np.expand_dims(type_2, axis=0)
 predictions = model.predict(type_2_x)
+
+index = np.argmax(predictions)
+print(class_names[index])
+
+type_3 = tf.keras.preprocessing.image.load_img('img_3/10.png', target_size=(width, height))
+
+plt.imshow(type_3)
+plt.show()
+
+type_3_x = np.expand_dims(type_3, axis=0)
+predictions = model.predict(type_3_x)
+
+index = np.argmax(predictions)
+print(class_names[index])
+
+type_4 = tf.keras.preprocessing.image.load_img('img_4/10.png', target_size=(width, height))
+
+plt.imshow(type_4)
+plt.show()
+
+type_4_x = np.expand_dims(type_4, axis=0)
+predictions = model.predict(type_4_x)
 
 index = np.argmax(predictions)
 print(class_names[index])

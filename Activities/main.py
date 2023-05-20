@@ -324,7 +324,7 @@ dense_2_n =512
 dense_2_drop = 0.2
 
 lr = 0.001
-epochs = 15
+epochs = 5
 batch_size =10
 color_channels =  3
 
