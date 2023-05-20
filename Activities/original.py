@@ -37,7 +37,7 @@ while CAMERA.isOpened():
     cv2.imshow("Capturing", frame)
     
     # Controls 1 = quit / s = capturing
-    key = cv2.waitKey(1)
+    key = cv2.waitKey(1) & 0xff
     
     if key & 0xff == ord('q'):
         break
