@@ -206,6 +206,13 @@ for image_path in glob('img_4/*.png*'):
     x = tf.keras.utils.img_to_array(image)
     
     images_type_4.append(x)
+
+print('Shape of images_type_1:', images_type_1[0].shape)
+print('Shape of images_type_2:', images_type_2[0].shape)
+print('Shape of images_type_3:', images_type_3[0].shape)
+print('Shape of images_type_4:', images_type_4[0].shape)
+    
+plt.figure(figsize=(12,8))
     
 
 # Generate visualization for images_type_1
