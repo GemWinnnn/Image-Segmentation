@@ -15,6 +15,9 @@ from sklearn.metrics import confusion_matrix
 from keras.utils import to_categorical
 from keras.applications import inception_v3
 import seaborn as sns 
+import tensorflow as tf
+from keras.preprocessing import image
+from keras.utils import to_categorical, load_img
 
 
 class_names = ['HEADPHONE','HARDDRIVE','MOUSE','GLASSES']
@@ -181,35 +184,37 @@ for i, frame in enumerate(raw_frames_type_4):
 
 
 for image_path in glob('img_1/*.png*'):
-    image = preprocessing.image.load_img(image_path, target_size=(width, height))
-    x = preprocessing.image.img_to_array(image)
+    image = tf.keras.utils.load_img(image_path, target_size=(width, height))
+    x = tf.keras.utils.img_to_array(image)
     
     images_type_1.append(x)
 
 for image_path in glob('img_2/*.png*'):
-    image = preprocessing.image.load_img(image_path, target_size=(width, height))
-    x = preprocessing.image.img_to_array(image)
+    image = tf.keras.utils.load_img(image_path, target_size=(width, height))
+    x =tf.keras.utils.img_to_array(image)
     
     images_type_2.append(x)
     
 for image_path in glob('img_3/*.png*'):
-    image = preprocessing.image.load_img(image_path, target_size=(width, height))
-    x = preprocessing.image.img_to_array(image)
+    image = tf.keras.utils.load_img(image_path, target_size=(width, height))
+    x = tf.keras.utils.img_to_array(image)
     
     images_type_3.append(x)
 
 for image_path in glob('img_4/*.png*'):
-    image = preprocessing.image.load_img(image_path, target_size=(width, height))
-    x = preprocessing.image.img_to_array(image)
+    image = tf.keras.utils.load_img (image_path, target_size=(width, height))
+    x = tf.keras.utils.img_to_array(image)
     
     images_type_4.append(x)
     
 plt.figure(figsize=(12, 8))
 
+
+#show in the figure the captured images
 for i, x in enumerate(images_type_1[:5]):
     
     plt.subplot(1, 5, i+1)
-    image = preprocessing.image.array_to_img(x)
+    image = tf.keras.utils.array_to_img(x)
     plt.imshow(image)
     
     plt.axis('off')
@@ -220,7 +225,7 @@ plt.show()
 for i, x in enumerate(images_type_2[:5]):
     
     plt.subplot(1, 5, i+1)
-    image = preprocessing.image.array_to_img(x)
+    image = tf.keras.utils.array_to_img(x)
     plt.imshow(image)
     
     plt.axis('off')
@@ -231,7 +236,7 @@ plt.show()
 for i, x in enumerate(images_type_3[:5]):
         
     plt.subplot(1, 5, i+1)
-    image = preprocessing.image.array_to_img(x)
+    image = tf.keras.utils.array_to_img(x)
     plt.imshow(image)
     
     plt.axis('off')
@@ -242,7 +247,7 @@ plt.show()
 for i, x in enumerate(images_type_4[:5]):
     
     plt.subplot(1, 5, i+1)
-    image = preprocessing.image.array_to_img(x)
+    image = tf.keras.utils.array_to_img(x)
     plt.imshow(image)
     
     plt.axis('off')
@@ -264,12 +269,12 @@ print (X_type_2.shape)
 print (X_type_3.shape)
 print (X_type_4.shape)
 
-(13, 96, 96, 3)
-(23, 96, 96, 3)
-(14, 96, 96, 3)
-(22, 96, 96, 3)
+# (13, 96, 96, 3)
+# (23, 96, 96, 3)
+# (14, 96, 96, 3)
+# (22, 96, 96, 3)
 
-X_type_2
+print (X_type_2)
 
 X = np.concatenate((X_type_1, X_type_2), axis=0)
 
@@ -283,11 +288,10 @@ if len(X_type_4):
 
 X = X / 255.0
 
-X.shape
+print (X.shape)
 
-(72, 96, 96, 3)
+# (72, 96, 96, 3)
 
-from keras.utils import to_categorical
 
 y_type_1 = [0 for item in enumerate(X_type_1)]
 y_type_2 = [1 for item in enumerate(X_type_2)]
@@ -304,9 +308,9 @@ if len(y_type_4):
     
 y = to_categorical(y, num_classes=len(class_names))
 
-y.shape
+print(y.shape)
 
-(72, 4)
+# (72, 4)
 
 
 # Situational - values, you may not adjust these
@@ -322,7 +326,7 @@ dense_2_drop = 0.2
 
 # Values you can adjust
 lr = 0.001
-epochs = 5
+epochs = 10
 batch_size = 10
 color_channels = 3
 
@@ -424,13 +428,14 @@ classes = None
 predicted_classes = []
 
 for i in range(len(imgs)):
-    type_ = preprocessing.image.load_img(imgs[i], target_size=(width, height))
+    type_ = tf.keras.preprocessing.image.load_img(imgs[i], target_size=(width, height))
     plt.imshow(type_)
     plt.show()
     
     type_x = np.expand_dims(type_, axis=0)
     prediction = model.predict(type_x)
     index = np.argmax(prediction)
+
     print(class_names[index])
     classes = class_names[index]
     predicted_classes.append(class_names[index])
@@ -438,7 +443,7 @@ for i in range(len(imgs)):
 cm = confusion_matrix(class_names, predicted_classes)
 f = sns.heatmap(cm, xticklabels=class_names, yticklabels=predicted_classes, annot=True)
 
-type_1 = preprocessing.image.load_img('img_1/10.png', target_size=(width, height))
+type_1 = tf.keras.preprocessing.image.load_img('img_1/10.png', target_size=(width, height))
 
 plt.imshow(type_1)
 plt.show()
@@ -449,7 +454,7 @@ index = np.argmax(predictions)
 
 print(class_names[index])
 
-type_2 = preprocessing.image.load_img('img_2/10.png', target_size=(width, height))
+type_2 = tf.keras.preprocessing.image.load_img('img_2/10.png', target_size=(width, height))
 
 plt.imshow(type_2)
 plt.show()
@@ -460,61 +465,59 @@ predictions = model.predict(type_2_x)
 index = np.argmax(predictions)
 print(class_names[index])
 
-# Live Predictions using camera
-
+#Live Predictions using camera
 
 CAMERA = cv2.VideoCapture(0)
 
-while(True):
+
+while True:
     _, frame = CAMERA.read()
-    
+
     # Flip
     frame = cv2.flip(frame, 1)
-    
-    # Rescale the images output
+
+    # Rescale the image output
     aspect = frame.shape[1] / float(frame.shape[0])
-    res = int(aspect* camera_height)
+    res = int(aspect * camera_height)  # Landscape orientation - wide image
     frame = cv2.resize(frame, (res, camera_height))
-    
-    # Get roi
-    roi = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    
+
+    # Get ROI
+    roi = frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x]
+
+    # Parse BRG to RGB
+    roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
+
     # Adjust alignment
     roi = cv2.resize(roi, (width, height))
-    roi_x = np.expand_dims(roi, axis=0)
+    roi = np.expand_dims(roi, axis=0)
 
-    predictions = model.predict(roi_x)
+    predictions = model.predict(roi)
     type_1_x, type_2_x, type_3_x, type_4_x = predictions[0]
-    
-    # The green rectangle
-    cv2.rectangle(frame, (300, 75), (650, 425), (0, 255, 0), 2)
-    
-    # Predictions / Labels
-    type_1_txt = '{}: {}%'.format(class_names[0], int(type_1_x*100))
-    cv2.putText(frame, type_1_txt, (70, 210), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
 
-    type_2_txt = '{}: {}%'.format(class_names[1], int(type_2_x*100))
-    cv2.putText(frame, type_2_txt, (70, 235), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
-    
-    type_3_txt = '{}: {}%'.format(class_names[2], int(type_3_x*100))
-    cv2.putText(frame, type_3_txt, (70, 255), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
-    
-    type_4_txt = '{}: {}%'.format(class_names[3], int(type_4_x*100))
-    cv2.putText(frame, type_4_txt, (70, 275), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
-    
-    cv2.imshow('Real time object detection', frame)
-    
-    # Conrols q = quit / s = capturing
+    # Green rectangle
+    cv2.rectangle(frame, (top_left_x, top_left_y), (bottom_right_x, bottom_right_y), (0, 255, 0), 2)
+
+
+    # Predictions/Labels
+    type_1_text = '{} - {}%'.format(class_names[0], int(type_1_x * 100))
+    cv2.putText(frame, type_1_text, (70, 210), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
+
+    type_2_text = '{} - {}%'.format(class_names[1], int(type_2_x * 100))
+    cv2.putText(frame, type_2_text, (70, 235), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
+
+    type_3_text = '{} - {}%'.format(class_names[2], int(type_3_x * 100))
+    cv2.putText(frame, type_3_text, (70, 255), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
+
+    type_4_text = '{} - {}%'.format(class_names[3], int(type_4_x * 100))
+    cv2.putText(frame, type_4_text, (70, 275), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
+
+    cv2.imshow('Real-time object detection', frame)
+
+    # Controls q = quit
     key = cv2.waitKey(1)
-    
-    if key & 0xff == ord('q'):
+    if key & 0xFF == ord('q'):
         break
-    
-    # Preview
-    plt.imshow(frame)
-    plt.show()
-    
-# Camera
+
+# Release the camera
 CAMERA.release()
 cv2.destroyAllWindows()
-

@@ -39,18 +39,18 @@ while CAMERA.isOpened():
     # Controls 1 = quit / s = capturing
     key = cv2.waitKey(1) & 0xff
     
-    if key & 0xff == ord('q'):
+    if key  == ord('q'):
         break
-    elif key & 0xff == ord('1'):
+    elif key  == ord('1'):
         # Save the raw frames to frame
         raw_frames_type_1.append(frame)
-    elif key & 0xff == ord('2'):
+    elif key  == ord('2'):
         # Save the raw frames to frame
         raw_frames_type_2.append(frame)
-    elif key & 0xff == ord('3'):
+    elif key  == ord('3'):
         # Save the raw frames to frame
         raw_frames_type_3.append(frame)
-    elif key & 0xff == ord('4'):
+    elif key  == ord('4'):
         # Save the raw frames to frame
         raw_frames_type_4.append(frame)
         
