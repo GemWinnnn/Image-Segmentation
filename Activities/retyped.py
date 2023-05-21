@@ -23,13 +23,13 @@ from keras.utils import to_categorical
 class_names = ['HEADPHONE','HARDDRIVE','MOUSE','GLASSES']
 
 # Initialize the camera
-CAMERA = cv2.VideoCapture(0)
+CAMERA = cv2.VideoCapture(1)
 
 camera_height = 500
-save_width = 350
-save_height = 350
-width = 350
-height = 350
+save_width = 200
+save_height = 200
+width = 200
+height = 200
 
 # Create an empty list for each type of frame
 raw_frames_type_1 = []
@@ -207,14 +207,8 @@ for image_path in glob('img_4/*.png*'):
     
     images_type_4.append(x)
 
-print('Shape of images_type_1:', images_type_1[0].shape)
-print('Shape of images_type_2:', images_type_2[0].shape)
-print('Shape of images_type_3:', images_type_3[0].shape)
-print('Shape of images_type_4:', images_type_4[0].shape)
-    
 plt.figure(figsize=(12,8))
     
-
 # Generate visualization for images_type_1
 for i, x in enumerate(images_type_1[:5]):
     
@@ -498,7 +492,7 @@ print(class_names[index])
 
 #Live Predictions using camera
 
-CAMERA = cv2.VideoCapture(0)
+CAMERA = cv2.VideoCapture(1)
 
 
 while True:
