@@ -1,6 +1,15 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
+from keras.models import Sequential
+from keras.layers.core import Activation, Dropout, Flatten, Dense
+from keras.layers.convolutional import Convolution2D, MaxPooling2D
+from keras.optimizers import Adam
+import seaborn as sns 
+from sklearn.metrics import confusion_matrix
+from keras.applications import inception_v3
+import time
+
 
 # %matplotlib inline
 
@@ -275,10 +284,7 @@ y.shape
 
 # CNN Config
 
-from keras.models import Sequential
-from keras.layers.core import Activation, Dropout, Flatten, Dense
-from keras.layers.convolutional import Convolution2D, MaxPooling2D
-from keras.optimizers import Adam
+
 
 # Default Parameters
 
@@ -380,8 +386,7 @@ plt.show()
 
 # Prediction
 
-import seaborn as sns 
-from sklearn.metrics import confusion_matrix
+
 
 def plt_show(img):
     plt.imshow(img)
@@ -438,8 +443,8 @@ print(class_names[index])
 
 # Live Predictions using camera
 
-from keras.applications import inception_v3
-import time
+# from keras.applications import inception_v3
+# import time
 
 CAMERA = cv2.VideoCapture(0)
 camera_height = 500
