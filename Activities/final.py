@@ -326,7 +326,7 @@ dense_2_drop = 0.2
 # Values you can adjust
 lr = 0.001
 epochs = 10
-batch_size = 10
+batch_size = 30
 color_channels = 3
 
 def build_model(conv_1_drop = conv_1_drop, conv_2_drop = conv_2_drop,
@@ -378,7 +378,7 @@ model.summary()
 
 # Do not run yet
 
-history = model.fit(X, y, validation_split=0.10, epochs=10, batch_size=5)
+history = model.fit(X, y, validation_split=0.10, epochs = 10, batch_size = 5)
 
 print(history) 
 
