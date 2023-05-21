@@ -326,7 +326,7 @@ dense_2_drop = 0.2
 # Values you can adjust
 lr = 0.001
 epochs = 10
-batch_size = 30
+batch_size = 10
 color_channels = 3
 
 def build_model(conv_1_drop = conv_1_drop, conv_2_drop = conv_2_drop,
