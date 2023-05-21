@@ -9,6 +9,8 @@ import seaborn as sns
 from sklearn.metrics import confusion_matrix
 from keras.applications import inception_v3
 import time
+import os
+from glob import glob
 
 
 # %matplotlib inline
@@ -74,8 +76,8 @@ cv2.destroyAllWindows()
 save_width = 339
 save_height = 400
 
-import os
-from glob import glob
+# import os
+# from glob import glob
 
 reval = os.getcwd()
 print ("Current working directory %s" % reval)
