@@ -44,7 +44,7 @@ class ObjectDetectionModel:
         self.dense_2_drop = 0.2
         self.lr = 0.001
         self.epochs = 15
-        self.batch_size = 20
+        self.batch_size = 30
         self.color_channels = 3
         self.model = None
 
@@ -115,150 +115,58 @@ class ObjectDetectionModel:
         rect_width = 350
         rect_height = 350
 
-
         top_left_x = center_x - rect_width // 2
         top_left_y = center_y - rect_height // 2
         bottom_right_x = center_x + rect_width // 2
         bottom_right_y = center_y + rect_height // 2
 
-        for i, frame in enumerate(self.raw_frames_type_1):
-            # Get ROI
-            roi = frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x]
+        for j, frame_list in enumerate([self.raw_frames_type_1, self.raw_frames_type_2, self.raw_frames_type_3, self.raw_frames_type_4]):
+            for i, frame in enumerate(frame_list):
 
-            # Parse BGR to RGB
-            roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
+                # Get ROI
+                roi = frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x]
 
-            # Resize to save_width x save_height
-            roi = cv2.resize(roi, (self.save_width, self.save_height))
+                # Parse BGR to RGB
+                roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
 
-            # Save
-            cv2.imwrite('img_1/{}.png'.format(i), cv2.cvtColor(roi, cv2.COLOR_RGB2BGR))
+                # Resize to save_width x save_height
+                roi = cv2.resize(roi, (self.save_width, self.save_height))
 
-            plt.imshow(roi)
-            plt.axis('off')
-            plt.show()
+                # Save
+                cv2.imwrite('img_{}/{}.png'.format(j + 1, i), cv2.cvtColor(roi, cv2.COLOR_RGB2BGR))
 
-        for i, frame in enumerate(self.raw_frames_type_2):
-            # Get ROI
-            roi = frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x]
-
-            # Parse BGR to RGB
-            roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
-
-            # Resize to save_width x save_height
-            roi = cv2.resize(roi, (self.save_width, self.save_height))
-
-            # Save
-            cv2.imwrite('img_2/{}.png'.format(i), cv2.cvtColor(roi, cv2.COLOR_RGB2BGR))
-
-            plt.imshow(roi)
-            plt.axis('off')
-            plt.show()
-
-        for i, frame in enumerate(self.raw_frames_type_3):
-            # Get ROI
-            roi = frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x]
-
-            # Parse BGR to RGB
-            roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
-
-            # Resize to save_width x save_height
-            roi = cv2.resize(roi, (self.save_width, self.save_height))
-
-            # Save
-            cv2.imwrite('img_3/{}.png'.format(i), cv2.cvtColor(roi, cv2.COLOR_RGB2BGR))
-
-            plt.imshow(roi)
-            plt.axis('off')
-            plt.show()
-
-        for i, frame in enumerate(self.raw_frames_type_4):
-            # Get ROI
-            roi = frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x]
-
-            # Parse BGR to RGB
-            roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
-
-            # Resize to save_width x save_height
-            roi = cv2.resize(roi, (self.save_width, self.save_height))
-
-            # Save
-            cv2.imwrite('img_4/{}.png'.format(i), cv2.cvtColor(roi, cv2.COLOR_RGB2BGR))
-
-            plt.imshow(roi)
-            plt.axis('off')
-            plt.show()
+                plt.imshow(roi)
+                plt.axis('off')
+                plt.show()
 
     def load_images(self):
-        for image_path in glob('img_1/*.png*'):
-            image = tf.keras.preprocessing.image.load_img(image_path, target_size=(self.width, self.height))
-            x = tf.keras.preprocessing.image.img_to_array(image)
-            self.images_type_1.append(x)
 
-        for image_path in glob('img_2/*.png*'):
-            image = tf.keras.preprocessing.image.load_img(image_path, target_size=(self.width, self.height))
-            x = tf.keras.preprocessing.image.img_to_array(image)
-            self.images_type_2.append(x)
+        image_types = [self.images_type_1, self.images_type_2, self.images_type_3, self.images_type_4]
 
-        for image_path in glob('img_3/*.png*'):
-            image = tf.keras.preprocessing.image.load_img(image_path, target_size=(self.width, self.height))
-            x = tf.keras.preprocessing.image.img_to_array(image)
-            self.images_type_3.append(x)
+        for j, image_type in enumerate(image_types):
+            for image_path in glob('img_{}/{}.png*'.format(j + 1, '*')):
+                image = tf.keras.preprocessing.image.load_img(image_path, target_size=(self.width, self.height))
+                x = tf.keras.preprocessing.image.img_to_array(image)
+                image_type.append(x)
 
-        for image_path in glob('img_4/*.png*'):
-            image = tf.keras.preprocessing.image.load_img(image_path, target_size=(self.width, self.height))
-            x = tf.keras.preprocessing.image.img_to_array(image)
-            self.images_type_4.append(x)
 
     def visualize_images(self):
-        plt.figure(figsize=(12, 8))
 
-        # Generate visualization for images_type_1
-        for i, x in enumerate(self.images_type_1[:5]):
-            plt.subplot(1, 5, i + 1)
-            image = tf.keras.preprocessing.image.array_to_img(x)
-            plt.imshow(image)
+        image_types = [self.images_type_1, self.images_type_2, self.images_type_3, self.images_type_4]
 
-            plt.axis('off')
-            plt.title('{} image'.format(self.class_names[0]))
+        for j, image_type in enumerate(image_types):
+            plt.figure(figsize=(12, 8))
 
-        plt.show()
-        plt.figure(figsize=(12, 8))
+            for i, x in enumerate(image_type[:5]):
+                plt.subplot(1, 5, i + 1)
+                image = tf.keras.preprocessing.image.array_to_img(x)
+                plt.imshow(image)
 
-        # Generate visualization for images_type_2
-        for i, x in enumerate(self.images_type_2[:5]):
-            plt.subplot(1, 5, i + 1)
-            image = tf.keras.preprocessing.image.array_to_img(x)
-            plt.imshow(image)
+                plt.axis('off')
+                plt.title('{} image'.format(self.class_names[j]))
 
-            plt.axis('off')
-            plt.title('{} image'.format(self.class_names[1]))
+            plt.show()
 
-        plt.show()
-        plt.figure(figsize=(12, 8))
-
-        # Generate visualization for images_type_3
-        for i, x in enumerate(self.images_type_3[:5]):
-            plt.subplot(1, 5, i + 1)
-            image = tf.keras.preprocessing.image.array_to_img(x)
-            plt.imshow(image)
-
-            plt.axis('off')
-            plt.title('{} image'.format(self.class_names[2]))
-
-        plt.show()
-        plt.figure(figsize=(12, 8))
-
-        # Generate visualization for images_type_4
-        for i, x in enumerate(self.images_type_4[:5]):
-            plt.subplot(1, 5, i + 1)
-            image = tf.keras.preprocessing.image.array_to_img(x)
-            plt.imshow(image)
-
-            plt.axis('off')
-            plt.title('{} image'.format(self.class_names[3]))
-
-        plt.show()
 
     def prepare_data(self):
         X_type_1 = np.array(self.images_type_1)
