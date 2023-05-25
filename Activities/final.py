@@ -23,7 +23,7 @@ from keras.utils import to_categorical
 class_names = ['HEADPHONE','HARDDRIVE','MOUSE','GLASSES']
 
 # Initialize the camera
-CAMERA = cv2.VideoCapture(0)
+CAMERA = cv2.VideoCapture(1)
 
 camera_height = 500
 save_width = 200
@@ -492,7 +492,7 @@ print(class_names[index])
 
 #Live Predictions using camera
 
-CAMERA = cv2.VideoCapture(0)
+CAMERA = cv2.VideoCapture(1)
 
 
 while True:
