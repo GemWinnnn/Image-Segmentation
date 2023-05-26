@@ -107,19 +107,12 @@ class ObjectDetectionModel:
         self.CAMERA.release()
         cv2.destroyAllWindows()
 
-    def crop_and_save_images(self):
+        # Return the coordinates of the rectangle
+        return top_left_x, top_left_y, bottom_right_x, bottom_right_y
+
+    
+    def crop_and_save_images(self, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
       
-        # Calculate the coordinates using the desired formula or logic
-        center_x = self.camera_height // 2
-        center_y = self.camera_height // 2
-        rect_width = 350
-        rect_height = 350
-
-        top_left_x = center_x - rect_width // 2
-        top_left_y = center_y - rect_height // 2
-        bottom_right_x = center_x + rect_width // 2
-        bottom_right_y = center_y + rect_height // 2
-
         for j, frame_list in enumerate([self.raw_frames_type_1, self.raw_frames_type_2, self.raw_frames_type_3, self.raw_frames_type_4]):
             for i, frame in enumerate(frame_list):
 
@@ -419,8 +412,8 @@ class ObjectDetectionModel:
 
     def run(self):
         self.initialize_camera()
-        self.capture_frames()
-        self.crop_and_save_images()
+        top_left_x, top_left_y, bottom_right_x, bottom_right_y = self.capture_frames()
+        self.crop_and_save_images(top_left_x, top_left_y, bottom_right_x, bottom_right_y)
         self.load_images()
         self.visualize_images()
         X, y = self.prepare_data()
